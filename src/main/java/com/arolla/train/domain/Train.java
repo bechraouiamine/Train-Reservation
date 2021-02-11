@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -24,5 +25,27 @@ public class Train {
     @OneToMany(mappedBy = "train")
     private Set<Coach> coachs;
 
+    public Train() {
+    }
 
+    public Train(String ref) {
+        this.ref = ref;
+    }
+
+    public String getRef() {
+        return ref;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Train train = (Train) o;
+        return ref.equals(train.ref);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ref);
+    }
 }
