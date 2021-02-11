@@ -1,5 +1,6 @@
 package com.arolla.train.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
@@ -26,4 +27,12 @@ public class Coach {
 
     @OneToMany(mappedBy = "coach")
     private Set<Seat> seats;
+
+    public String getRef() {
+        return ref;
+    }
+
+    public String getTrainRef() {
+        return train.getRef();
+    }
 }
