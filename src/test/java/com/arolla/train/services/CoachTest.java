@@ -27,7 +27,7 @@ public class CoachTest {
     private MockMvc mockMvc;
 
     @Test
-    public void should_return() throws Exception {
+    public void should_validate_trains_refs_exist_status_ok_and_print_json() throws Exception {
         this.mockMvc
                 .perform(get("http://localhost:8080/api/v1/coachs"))
                 .andDo(print())
