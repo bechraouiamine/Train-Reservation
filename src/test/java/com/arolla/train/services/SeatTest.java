@@ -35,7 +35,7 @@ public class SeatTest {
     private ObjectMapper objectMapper;
 
     @Test
-    void name() throws Exception {
+    void should_return_list_of_seats_and_expect_number_of_seats_32() throws Exception {
         MvcResult result = mockMvc.perform(get("http://localhost:8080/api/v1/seats"))
         .andExpect(status().isOk())
         .andReturn();
