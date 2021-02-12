@@ -25,4 +25,20 @@ public class Seat {
     private Coach coach;
 
     private String bookingRef;
+
+    public String getRef() {
+        return ref;
+    }
+
+    public String getBookingRef() {
+        return bookingRef;
+    }
+
+    public String getCoachRef() {
+        return coach.getRef();
+    }
+
+    public String getTrainRef() {
+        return coach.getTrainRef();
+    }
 }
