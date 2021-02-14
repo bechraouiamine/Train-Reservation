@@ -40,4 +40,11 @@ public class Seat {
         return bookingRef;
     }
 
+    public void setBookingRef(String bookingRef) {
+        this.bookingRef = bookingRef;
+    }
+
+    public String getCoachReference() {
+        return coach.getRef();
+    }
 }

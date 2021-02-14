@@ -12,5 +12,12 @@ import java.util.UUID;
  */
 @Repository
 public interface SeatRepository extends JpaRepository<Seat, UUID> {
+
     List<Seat> findAllByCoachRefAndTrainRef(String coachRef, String trainRef);
+
+    List<Seat> findAllByCoachRefAndTrainRefAndRefIn(String coachRef, String trainRef, List<String> refs);
+
+    List<Seat> findAllByTrainRef(String trainRef);
+
+    List<Seat> findAllByTrainRefAndBookingRefIsNull(String trainRef);
 }

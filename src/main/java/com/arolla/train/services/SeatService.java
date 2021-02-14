@@ -25,4 +25,19 @@ public class SeatService {
     public List<Seat> getSeatsByCoachRefAndTrainRef(String coachRef, String trainRef) {
         return seatRepository.findAllByCoachRefAndTrainRef(coachRef, trainRef);
     }
+
+    public List<Seat> getSeatsByCoachRefAndTrainRefAndRefIn(String coachRef, String trainRef, List<String> refs) {
+        return seatRepository.findAllByCoachRefAndTrainRefAndRefIn(coachRef, trainRef, refs);
+    }
+
+    public List<Seat> findAllByTrainRefAndBookingRefIsNull(String trainRef) {
+        return seatRepository.findAllByTrainRefAndBookingRefIsNull(trainRef);
+    }
+
+    public Seat update(Seat seatToBook) {
+        return seatRepository.save(seatToBook);
+    }
+
+
+
 }
