@@ -1,5 +1,6 @@
 package com.arolla.train.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
@@ -22,7 +23,12 @@ public class Seat {
     private String ref;
 
     @ManyToOne
+    @JsonProperty
     private Coach coach;
+
+    @ManyToOne
+    @JsonProperty
+    private Train train;
 
     private String bookingRef;
 
@@ -34,11 +40,4 @@ public class Seat {
         return bookingRef;
     }
 
-    public String getCoachRef() {
-        return coach.getRef();
-    }
-
-    public String getTrainRef() {
-        return coach.getTrainRef();
-    }
 }

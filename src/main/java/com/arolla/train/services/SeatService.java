@@ -5,6 +5,7 @@ import com.arolla.train.repository.SeatRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by aminebechraoui, on 11/02/2021, in com.arolla.train.services
@@ -19,5 +20,9 @@ public class SeatService {
 
     public List<Seat> getSeats() {
         return seatRepository.findAll();
+    }
+
+    public List<Seat> getSeatsByCoachRefAndTrainRef(String coachRef, String trainRef) {
+        return seatRepository.findAllByCoachRefAndTrainRef(coachRef, trainRef);
     }
 }
