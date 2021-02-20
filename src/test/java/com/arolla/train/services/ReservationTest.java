@@ -83,4 +83,16 @@ public class ReservationTest {
         assertEquals(25, bookedPercentageA);
         assertEquals(0, bookedPercentageB);
     }
+
+    @Test
+    void should_return_possible_train_percentage_if_booked() {
+        // Given
+        ReservationRequest reservation =  new ReservationRequest("express_2000", 2);
+
+        // When
+        double trainPercentageIfBooked = reservationService.getTrainPercentageIfBooked(reservation);
+
+        // Then
+        assertEquals(12.5, trainPercentageIfBooked);
+    }
 }

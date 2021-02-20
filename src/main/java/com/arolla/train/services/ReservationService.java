@@ -66,8 +66,16 @@ public class ReservationService {
         return calculatePercentage(seatsNumber, availableSeat);
     }
 
+
+
+    public double getTrainPercentageIfBooked(ReservationRequest reservation) {
+        double seatsNumber = seatService.countByTrainRef(reservation.getTrainRef());
+        double availableSeat = seatService.countByTrainRefAndBookingRefIsNotNull(reservation.getTrainRef());
+
+        return calculatePercentage(seatsNumber, availableSeat + reservation.getSeatsNumber());
+    }
+
     private double calculatePercentage(double total, double toCalculate) {
         return toCalculate * 100 / total;
     }
-
 }
