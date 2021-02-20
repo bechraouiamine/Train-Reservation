@@ -22,11 +22,16 @@ public interface SeatRepository extends JpaRepository<Seat, UUID> {
 
     List<Seat> findAllByTrainRefAndBookingRefIsNull(String trainRef);
 
-    long countByTrainId(UUID trainId);
+    @Query("Select count(*) from Seat s where s.train.ref = ?1")
+    long countByTrainRef(String trainRef);
 
-    long countByTrainIdAndBookingRefIsNotNull(UUID trainId);
+    @Query("Select count(*) from Seat s where s.train.ref = ?1 and s.bookingRef is not null")
+    long countByTrainRefAndBookingRefIsNotNull(String trainRef);
 
-    long countByTrainIdAndCoachIdAndBookingRefIsNotNull(UUID trainId, UUID coachId);
+    @Query("Select count(*) from Seat s where s.train.ref = ?1 and s.coach.ref = ?2")
+    long countByTrainRefAndCoachRef(String trainRef, String coachRef);
 
-    long countByTrainIdAndCoachId(UUID trainId, UUID coachId);
+    @Query("Select count(*) from Seat s where s.train.ref = ?1 and s.coach.ref = ?2 and s.bookingRef is not null")
+    long countByTrainRefAndCoachRefAndBookingRefIsNotNull(String trainRef, String coachRef);
+
 }

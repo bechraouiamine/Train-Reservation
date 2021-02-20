@@ -22,7 +22,4 @@ public class TrainService {
         return trainRepository.findAll();
     }
 
-    public UUID findByRef(String trainRef) {
-        return trainRepository.findIdByRef(trainRef);
-    }
 }

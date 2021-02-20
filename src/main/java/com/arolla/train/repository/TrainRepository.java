@@ -14,6 +14,4 @@ import java.util.UUID;
 @Repository
 public interface TrainRepository extends JpaRepository<Train, UUID> {
 
-    @Query("SELECT t.id FROM Train t where t.ref = ?1")
-    UUID findIdByRef(String ref);
 }

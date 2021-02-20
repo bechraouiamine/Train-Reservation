@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -54,15 +55,32 @@ public class ReservationTest {
     }
 
     @Test
+    @Transactional
     void should_return_percentage_of_booked_seat_on_express_1000_when_book_2_seats() throws InterruptedException {
         // Given
         ReservationRequest reservation =  new ReservationRequest("express_2000", 2);
 
         // When
         ReservationResult result = reservationService.book(reservation);
-        long bookedPercentage = reservationService.getBookedPercentageOnTrain("express_2000");
+        double bookedPercentage = reservationService.getBookedPercentageOnTrain("express_2000");
 
         // Then
-        assertEquals(12, bookedPercentage);
+        assertEquals(12.5, bookedPercentage);
+    }
+
+    @Test
+    @Transactional
+    void should_return_percentage_of_booked_seat_on_express_1000_coachA_and_coachB_when_book_2_seats() throws InterruptedException {
+        // Given
+        ReservationRequest reservation =  new ReservationRequest("express_2000", 2);
+
+        // When
+        ReservationResult result = reservationService.book(reservation);
+        double bookedPercentageA = reservationService.getBookedPercentageOnTrainAndCoach("express_2000", "A");
+        double bookedPercentageB = reservationService.getBookedPercentageOnTrainAndCoach("express_2000", "B");
+
+        // Then
+        assertEquals(25, bookedPercentageA);
+        assertEquals(0, bookedPercentageB);
     }
 }

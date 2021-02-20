@@ -5,7 +5,6 @@ import com.arolla.train.repository.SeatRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by aminebechraoui, on 11/02/2021, in com.arolla.train.services
@@ -38,19 +37,19 @@ public class SeatService {
         return seatRepository.save(seatToBook);
     }
 
-    public long countByTrainId(UUID trainId) {
-        return seatRepository.countByTrainId(trainId);
+    public long countByTrainRef(String trainRef) {
+        return seatRepository.countByTrainRef(trainRef);
     }
 
-    public long countByTrainIdAndBookingRefIsNull(UUID trainId) {
-        return seatRepository.countByTrainIdAndBookingRefIsNotNull(trainId);
+    public long countByTrainRefAndBookingRefIsNotNull(String trainRef) {
+        return seatRepository.countByTrainRefAndBookingRefIsNotNull(trainRef);
     }
 
-    public long countByTrainIdAndCoachId(UUID trainId, UUID coachId) {
-        return seatRepository.countByTrainIdAndCoachId(trainId, coachId);
+    public long countByTrainRefAndCoachRef(String trainRef, String coachRef) {
+        return seatRepository.countByTrainRefAndCoachRef(trainRef, coachRef);
     }
 
-    public long countByTrainIdAndCoachIdAndBookingRefIsNull(UUID trainId, UUID coachId) {
-        return seatRepository.countByTrainIdAndCoachIdAndBookingRefIsNotNull(trainId, coachId);
+    public long countByTrainRefAndCoachRefAndBookingRefIsNotNull(String trainRef, String coachRef) {
+        return seatRepository.countByTrainRefAndCoachRefAndBookingRefIsNotNull(trainRef, coachRef);
     }
 }

@@ -52,17 +52,22 @@ public class ReservationService {
         return seatService.update(seat);
     }
 
-    public long getBookedPercentageOnTrain(String trainRef) {
-        UUID trainId = trainService.findByRef(trainRef);
-
-        long seatsNumber = seatService.countByTrainId(trainId);
-        long availableSeat = seatService.countByTrainIdAndBookingRefIsNull(trainId);
+    public double getBookedPercentageOnTrain(String trainRef) {
+        double seatsNumber = seatService.countByTrainRef(trainRef);
+        double availableSeat = seatService.countByTrainRefAndBookingRefIsNotNull(trainRef);
 
         return calculatePercentage(seatsNumber, availableSeat);
-
     }
 
-    private long calculatePercentage(long total, long toCalculate) {
+    public double getBookedPercentageOnTrainAndCoach(String trainRef, String coachRef) {
+        double seatsNumber = seatService.countByTrainRefAndCoachRef(trainRef, coachRef);
+        double availableSeat = seatService.countByTrainRefAndCoachRefAndBookingRefIsNotNull(trainRef, coachRef);
+
+        return calculatePercentage(seatsNumber, availableSeat);
+    }
+
+    private double calculatePercentage(double total, double toCalculate) {
         return toCalculate * 100 / total;
     }
+
 }
