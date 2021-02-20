@@ -46,4 +46,11 @@ public class SeatService {
         return seatRepository.countByTrainId(trainId);
     }
 
+    public long countByTrainIdAndCoachId(UUID trainId, UUID coachId) {
+        return seatRepository.countByTrainIdAndCoachId(trainId, coachId);
+    }
+
+    public long countByTrainIdAndCoachIdAndBookingRefIsNull(UUID trainId, UUID coachId) {
+        return seatRepository.countByTrainIdAndCoachIdAndBookingRefIsNull(trainId, coachId);
+    }
 }

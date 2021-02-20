@@ -80,4 +80,18 @@ public class SeatTest {
         // Then
         assertEquals(0, seatNumberOnExpress1000 - freeSeatNumberOnExpress1000);
     }
+
+    @Test
+    void should_return_booked_seat_on_express_1000_coach_a() {
+        // Given
+        UUID trainId = UUID.fromString("d72a9fd6-6c5b-11eb-9439-0242ac130002");
+        UUID coachId = UUID.fromString("0bd75dc8-6c5c-11eb-9439-0242ac130002");
+
+        // When
+        long seatNumberOnExpress1000CoachA = seatService.countByTrainIdAndCoachId(trainId, coachId);
+        long freeSeatNumberOnExpress1000CoachA = seatService.countByTrainIdAndCoachIdAndBookingRefIsNull(trainId, coachId);
+
+        // Then
+        assertEquals(0, seatNumberOnExpress1000CoachA - freeSeatNumberOnExpress1000CoachA);
+    }
 }
