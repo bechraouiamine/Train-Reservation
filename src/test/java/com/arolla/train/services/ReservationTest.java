@@ -30,7 +30,10 @@ public class ReservationTest {
 
     @Test
     void should_return_reservation_object_with_booking_ref_filled() throws Exception {
+        // Given
         ReservationRequest reservationRequest = new ReservationRequest("local_1000", 3);
+
+        // When
         MvcResult result = mockMvc.perform(post("http://localhost:8080/api/v1/reservation")
                                             .contentType(MediaType.APPLICATION_JSON)
                                             .content(objectMapper.writeValueAsString(reservationRequest))
@@ -39,6 +42,7 @@ public class ReservationTest {
 
         ReservationResult reservationResult = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<ReservationResult>(){});
 
+        // Then
         assertNotNull(reservationResult.getBookingRef());
         assertEquals(3, reservationResult.getCoachRefSeatRef().size());
 

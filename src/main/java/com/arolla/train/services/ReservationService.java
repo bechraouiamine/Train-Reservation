@@ -28,14 +28,18 @@ public class ReservationService {
         List<String> seatsBooked = new ArrayList<>();;
         String bookingRef = bookingRefService.generateRef();
         if (seats.size() >= request.getSeatsNumber()) {
-            seats.subList(0, request.getSeatsNumber())
-                    .stream()
-                    .forEach(s -> {
-                        s = bookSeat(s, bookingRef);
-                        seatsBooked.add(s.getCoachReference() + s.getRef());
-                    });
+            bookAndReturnSeats(request.getSeatsNumber(), seats, seatsBooked, bookingRef);
         }
         return new ReservationResult(request.getTrainRef(), seatsBooked, bookingRef);
+    }
+
+    private void bookAndReturnSeats(int seatsNumber, List<Seat> seats, List<String> seatsBooked, String bookingRef) {
+        seats.subList(0, seatsNumber)
+                .stream()
+                .forEach(s -> {
+                    s = bookSeat(s, bookingRef);
+                    seatsBooked.add(s.getCoachReference() + s.getRef());
+                });
     }
 
     private Seat bookSeat(Seat seat, String bookingRef) {
