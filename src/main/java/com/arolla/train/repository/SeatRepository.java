@@ -24,7 +24,9 @@ public interface SeatRepository extends JpaRepository<Seat, UUID> {
 
     long countByTrainId(UUID trainId);
 
-    long countByTrainIdAndCoachIdAndBookingRefIsNull(UUID trainId, UUID coachId);
+    long countByTrainIdAndBookingRefIsNotNull(UUID trainId);
+
+    long countByTrainIdAndCoachIdAndBookingRefIsNotNull(UUID trainId, UUID coachId);
 
     long countByTrainIdAndCoachId(UUID trainId, UUID coachId);
 }

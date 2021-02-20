@@ -43,7 +43,7 @@ public class SeatService {
     }
 
     public long countByTrainIdAndBookingRefIsNull(UUID trainId) {
-        return seatRepository.countByTrainId(trainId);
+        return seatRepository.countByTrainIdAndBookingRefIsNotNull(trainId);
     }
 
     public long countByTrainIdAndCoachId(UUID trainId, UUID coachId) {
@@ -51,6 +51,6 @@ public class SeatService {
     }
 
     public long countByTrainIdAndCoachIdAndBookingRefIsNull(UUID trainId, UUID coachId) {
-        return seatRepository.countByTrainIdAndCoachIdAndBookingRefIsNull(trainId, coachId);
+        return seatRepository.countByTrainIdAndCoachIdAndBookingRefIsNotNull(trainId, coachId);
     }
 }

@@ -5,6 +5,7 @@ import com.arolla.train.repository.TrainRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by aminebechraoui, on 11/02/2021, in com.arolla.train.services
@@ -19,5 +20,9 @@ public class TrainService {
 
     public List<Train> getAllTrains() {
         return trainRepository.findAll();
+    }
+
+    public UUID findByRef(String trainRef) {
+        return trainRepository.findIdByRef(trainRef);
     }
 }

@@ -3,10 +3,12 @@ package com.arolla.train.services;
 import com.arolla.train.domain.ReservationRequest;
 import com.arolla.train.domain.ReservationResult;
 import com.arolla.train.domain.Seat;
+import com.arolla.train.domain.Train;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by aminebechraoui, on 14/02/2021, in com.arolla.train.services
@@ -16,11 +18,14 @@ public class ReservationService {
 
     private final SeatService seatService;
 
+    private final TrainService trainService;
+
     private final BookingRefService bookingRefService;
 
-    public ReservationService(SeatService seatService, BookingRefService bookingRefService) {
+    public ReservationService(SeatService seatService, BookingRefService bookingRefService, TrainService trainService) {
         this.seatService = seatService;
         this.bookingRefService = bookingRefService;
+        this.trainService = trainService;
     }
 
     public ReservationResult book(ReservationRequest request) {
@@ -45,5 +50,19 @@ public class ReservationService {
     private Seat bookSeat(Seat seat, String bookingRef) {
         seat.setBookingRef(bookingRef);
         return seatService.update(seat);
+    }
+
+    public long getBookedPercentageOnTrain(String trainRef) {
+        UUID trainId = trainService.findByRef(trainRef);
+
+        long seatsNumber = seatService.countByTrainId(trainId);
+        long availableSeat = seatService.countByTrainIdAndBookingRefIsNull(trainId);
+
+        return calculatePercentage(seatsNumber, availableSeat);
+
+    }
+
+    private long calculatePercentage(long total, long toCalculate) {
+        return toCalculate * 100 / total;
     }
 }

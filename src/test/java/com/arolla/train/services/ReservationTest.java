@@ -12,6 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.UUID;
+
+import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -27,6 +30,9 @@ public class ReservationTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private ReservationService reservationService;
 
     @Test
     void should_return_reservation_object_with_booking_ref_filled() throws Exception {
@@ -45,6 +51,18 @@ public class ReservationTest {
         // Then
         assertNotNull(reservationResult.getBookingRef());
         assertEquals(3, reservationResult.getCoachRefSeatRef().size());
+    }
 
+    @Test
+    void should_return_percentage_of_booked_seat_on_express_1000_when_book_2_seats() throws InterruptedException {
+        // Given
+        ReservationRequest reservation =  new ReservationRequest("express_2000", 2);
+
+        // When
+        ReservationResult result = reservationService.book(reservation);
+        long bookedPercentage = reservationService.getBookedPercentageOnTrain("express_2000");
+
+        // Then
+        assertEquals(12, bookedPercentage);
     }
 }
