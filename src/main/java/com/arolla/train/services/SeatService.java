@@ -38,6 +38,12 @@ public class SeatService {
         return seatRepository.save(seatToBook);
     }
 
+    public long countByTrainId(UUID trainId) {
+        return seatRepository.countByTrainId(trainId);
+    }
 
+    public long countByTrainIdAndBookingRefIsNull(UUID trainId) {
+        return seatRepository.countByTrainId(trainId);
+    }
 
 }

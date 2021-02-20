@@ -2,6 +2,7 @@ package com.arolla.train.repository;
 
 import com.arolla.train.domain.Seat;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,4 +21,8 @@ public interface SeatRepository extends JpaRepository<Seat, UUID> {
     List<Seat> findAllByTrainRef(String trainRef);
 
     List<Seat> findAllByTrainRefAndBookingRefIsNull(String trainRef);
+
+    long countByTrainId(UUID trainId);
+
+    long countByTrainIdAndCoachIdAndBookingRefIsNull(UUID trainId, UUID coachId);
 }

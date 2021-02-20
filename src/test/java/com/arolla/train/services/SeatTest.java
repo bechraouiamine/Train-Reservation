@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -35,6 +36,9 @@ public class SeatTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private SeatService seatService;
 
     @Test
     void should_return_list_of_seats_and_expect_number_of_seats_32() throws Exception {
@@ -62,5 +66,18 @@ public class SeatTest {
         seats.forEach(s -> {
             assertTrue(s.getBookingRef() == null);
         });
-     }
+    }
+
+    @Test
+    void should_return_booked_seat_on_express_1000() {
+        // Given
+        UUID trainId = UUID.fromString("d72a9fd6-6c5b-11eb-9439-0242ac130002");
+
+        // When
+        long seatNumberOnExpress1000 = seatService.countByTrainId(trainId);
+        long freeSeatNumberOnExpress1000 = seatService.countByTrainIdAndBookingRefIsNull(trainId);
+
+        // Then
+        assertEquals(0, seatNumberOnExpress1000 - freeSeatNumberOnExpress1000);
+    }
 }
