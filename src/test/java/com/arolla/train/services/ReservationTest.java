@@ -16,8 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
 
 import static java.lang.Thread.sleep;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 /**
@@ -56,7 +55,7 @@ public class ReservationTest {
 
     @Test
     @Transactional
-    void should_return_percentage_of_booked_seat_on_express_1000_when_book_2_seats() throws InterruptedException {
+    void should_return_percentage_of_booked_seat_on_express_2000_when_book_2_seats() throws InterruptedException {
         // Given
         ReservationRequest reservation =  new ReservationRequest("express_2000", 2);
 
@@ -70,7 +69,7 @@ public class ReservationTest {
 
     @Test
     @Transactional
-    void should_return_percentage_of_booked_seat_on_express_1000_coachA_and_coachB_when_book_2_seats() throws InterruptedException {
+    void should_return_percentage_of_booked_seat_on_express_2000_coachA_and_coachB_when_book_2_seats() throws InterruptedException {
         // Given
         ReservationRequest reservation =  new ReservationRequest("express_2000", 2);
 
@@ -107,5 +106,17 @@ public class ReservationTest {
 
         // Then
         assertEquals(25, trainPercentageIfBooked);
+    }
+
+    @Test
+    void should_not_book_if_reservation_overtaken_70_on_train() {
+        // Given
+        ReservationRequest reservation =  new ReservationRequest("express_2000", 12);
+
+        // When
+        ReservationResult result = reservationService.book(reservation);
+
+        assertNull(result.getBookingRef());
+        assertEquals(result.getTrainRef(), "express_2000");
     }
 }

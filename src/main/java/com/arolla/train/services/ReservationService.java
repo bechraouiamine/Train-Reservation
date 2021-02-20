@@ -29,13 +29,17 @@ public class ReservationService {
     }
 
     public ReservationResult book(ReservationRequest request) {
-        List<Seat> seats = seatService.findAllByTrainRefAndBookingRefIsNull(request.getTrainRef());
-        List<String> seatsBooked = new ArrayList<>();;
-        String bookingRef = bookingRefService.generateRef();
-        if (seats.size() >= request.getSeatsNumber()) {
-            bookAndReturnSeats(request.getSeatsNumber(), seats, seatsBooked, bookingRef);
+        if (getTrainPercentageIfBooked(request) <= 70) {
+            List<Seat> seats = seatService.findAllByTrainRefAndBookingRefIsNull(request.getTrainRef());
+            List<String> seatsBooked = new ArrayList<>();;
+            String bookingRef = bookingRefService.generateRef();
+            if (seats.size() >= request.getSeatsNumber()) {
+                bookAndReturnSeats(request.getSeatsNumber(), seats, seatsBooked, bookingRef);
+            }
+            return new ReservationResult(request.getTrainRef(), seatsBooked, bookingRef);
+        } else {
+            return new ReservationResult(request.getTrainRef(), null, null);
         }
-        return new ReservationResult(request.getTrainRef(), seatsBooked, bookingRef);
     }
 
     private void bookAndReturnSeats(int seatsNumber, List<Seat> seats, List<String> seatsBooked, String bookingRef) {
