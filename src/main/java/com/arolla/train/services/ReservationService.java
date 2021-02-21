@@ -1,14 +1,10 @@
 package com.arolla.train.services;
 
-import com.arolla.train.domain.ReservationRequest;
-import com.arolla.train.domain.ReservationResult;
-import com.arolla.train.domain.Seat;
-import com.arolla.train.domain.Train;
+import com.arolla.train.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Created by aminebechraoui, on 14/02/2021, in com.arolla.train.services
@@ -18,28 +14,70 @@ public class ReservationService {
 
     private final SeatService seatService;
 
+    private final CoachService coachService;
+
     private final TrainService trainService;
 
     private final BookingRefService bookingRefService;
 
-    public ReservationService(SeatService seatService, BookingRefService bookingRefService, TrainService trainService) {
+    public ReservationService(SeatService seatService, BookingRefService bookingRefService, TrainService trainService, CoachService coachService) {
         this.seatService = seatService;
         this.bookingRefService = bookingRefService;
         this.trainService = trainService;
+        this.coachService = coachService;
     }
 
     public ReservationResult book(ReservationRequest request) {
         if (getTrainPercentageIfBooked(request) <= 70) {
-            List<Seat> seats = seatService.findAllByTrainRefAndBookingRefIsNull(request.getTrainRef());
-            List<String> seatsBooked = new ArrayList<>();;
-            String bookingRef = bookingRefService.generateRef();
-            if (seats.size() >= request.getSeatsNumber()) {
-                bookAndReturnSeats(request.getSeatsNumber(), seats, seatsBooked, bookingRef);
-            }
-            return new ReservationResult(request.getTrainRef(), seatsBooked, bookingRef);
-        } else {
-            return new ReservationResult(request.getTrainRef(), null, null);
+            ReservationResult result = selectingTheCoach(request);
+            if (result != null) return result;
         }
+        return new ReservationResult(request.getTrainRef(), null, null);
+    }
+
+    private ReservationResult selectingTheCoach(ReservationRequest request) {
+        List<Coach> coaches = coachService.findCoachesByTrainRef(request.getTrainRef());
+        for(Coach coach : coaches) {
+            if (coach.getSeats()
+                    .stream()
+                    .filter(s -> s.getBookingRef() == null).count() >= request.getSeatsNumber()) {
+                return bookingSeats(request, coach);
+            }
+        }
+        return null;
+    }
+
+    private ReservationResult bookingSeats(ReservationRequest request, Coach coach) {
+        String bookingRef = bookingRefService.generateRef();
+        List<Seat> seats = selectingSeats(request, coach);
+
+        bookingSeats(bookingRef, seats);
+
+        List<String> seatsBooked = concatenatingSeatRefAndCoachRef(seats);
+        return new ReservationResult(request.getTrainRef(), seatsBooked, bookingRef);
+    }
+
+    private void bookingSeats(String bookingRef, List<Seat> seats) {
+        seats.forEach(seat -> {
+            bookSeat(seat, bookingRef);
+        });
+    }
+
+    private List<String> concatenatingSeatRefAndCoachRef(List<Seat> seats) {
+        List<String> seatsBooked = seats.stream()
+                .map(seat -> {
+                    return seat.getRef() + seat.getCoachReference();})
+                .collect(Collectors.toList());
+        return seatsBooked;
+    }
+
+    private List<Seat> selectingSeats(ReservationRequest request, Coach coach) {
+        List<Seat> seats = coach.getSeats()
+                .stream()
+                .filter(s -> s.getBookingRef() == null)
+                .limit((long) request.getSeatsNumber())
+                .collect(Collectors.toList());
+        return seats;
     }
 
     private void bookAndReturnSeats(int seatsNumber, List<Seat> seats, List<String> seatsBooked, String bookingRef) {

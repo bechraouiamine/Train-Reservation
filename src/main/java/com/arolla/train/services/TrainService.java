@@ -1,5 +1,6 @@
 package com.arolla.train.services;
 
+import com.arolla.train.domain.Coach;
 import com.arolla.train.domain.Train;
 import com.arolla.train.repository.TrainRepository;
 import org.springframework.stereotype.Service;
@@ -21,5 +22,6 @@ public class TrainService {
     public List<Train> getAllTrains() {
         return trainRepository.findAll();
     }
+
 
 }

@@ -35,4 +35,8 @@ public class Coach {
     public String getTrainRef() {
         return train.getRef();
     }
+
+    public Set<Seat> getSeats() {
+        return seats;
+    }
 }

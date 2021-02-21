@@ -1,6 +1,7 @@
 package com.arolla.train.services;
 
 import com.arolla.train.domain.Coach;
+import com.arolla.train.domain.Train;
 import com.arolla.train.repository.CoachRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,11 @@ public class CoachService {
         this.coachRepository = coachRepository;
     }
 
-    public List<Coach> getAllCoachs() {
+    public List<Coach> getAllCoaches() {
         return coachRepository.findAll();
+    }
+
+    public List<Coach> findCoachesByTrainRef(String trainRef) {
+        return coachRepository.findByTrainRef(trainRef);
     }
 }

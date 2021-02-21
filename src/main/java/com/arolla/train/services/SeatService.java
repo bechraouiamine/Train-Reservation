@@ -33,6 +33,10 @@ public class SeatService {
         return seatRepository.findAllByTrainRefAndBookingRefIsNull(trainRef);
     }
 
+    public List<Seat> findAllByTrainRefAndCoachRefAndBookingRefIsNull(String trainRef, String coachRef) {
+        return seatRepository.findAllByTrainRefAndCoachAndBookingRefIsNull(trainRef, coachRef);
+    }
+
     public Seat update(Seat seatToBook) {
         return seatRepository.save(seatToBook);
     }

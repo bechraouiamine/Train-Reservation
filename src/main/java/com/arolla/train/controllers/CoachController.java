@@ -5,7 +5,6 @@ import com.arolla.train.services.CoachService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class CoachController {
     
     @GetMapping(value="coachs")
     public List<Coach> getAllCoach() {
-        return coachService.getAllCoachs();
+        return coachService.getAllCoaches();
     }
     
 }

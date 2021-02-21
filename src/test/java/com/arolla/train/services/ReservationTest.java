@@ -119,4 +119,17 @@ public class ReservationTest {
         assertNull(result.getBookingRef());
         assertEquals(result.getTrainRef(), "express_2000");
     }
+
+    @Test
+    @Transactional
+    void should_book_seats_on_the_same_coach() {
+        // Given
+        ReservationRequest reservation =  new ReservationRequest("local_1000", 8);
+
+        // When
+        ReservationResult result = reservationService.book(reservation);
+
+        // Then
+        assertNotNull(result.getBookingRef());
+    }
 }

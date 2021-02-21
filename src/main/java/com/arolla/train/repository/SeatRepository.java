@@ -18,9 +18,9 @@ public interface SeatRepository extends JpaRepository<Seat, UUID> {
 
     List<Seat> findAllByCoachRefAndTrainRefAndRefIn(String coachRef, String trainRef, List<String> refs);
 
-    List<Seat> findAllByTrainRef(String trainRef);
-
     List<Seat> findAllByTrainRefAndBookingRefIsNull(String trainRef);
+
+    List<Seat> findAllByTrainRefAndCoachAndBookingRefIsNull(String trainRef, String coachRef);
 
     @Query("Select count(*) from Seat s where s.train.ref = ?1")
     long countByTrainRef(String trainRef);
@@ -33,5 +33,6 @@ public interface SeatRepository extends JpaRepository<Seat, UUID> {
 
     @Query("Select count(*) from Seat s where s.train.ref = ?1 and s.coach.ref = ?2 and s.bookingRef is not null")
     long countByTrainRefAndCoachRefAndBookingRefIsNotNull(String trainRef, String coachRef);
+
 
 }
